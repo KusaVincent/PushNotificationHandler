@@ -29,5 +29,5 @@ function prepareAPIRequest($data)
         if(!compareHash($hash, $hash_generator)) 
                 return;
 
-        prepareInsert($data);
+        return prepareInsert($data);
 }
