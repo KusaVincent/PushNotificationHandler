@@ -1,6 +1,6 @@
 <?php
 
-function prepareInsert($dbData) : true
+function prepareInsert(array $dbData) : bool
 {
     return true; // prepare data and save
 }

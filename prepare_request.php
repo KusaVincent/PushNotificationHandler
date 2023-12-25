@@ -3,7 +3,7 @@ use Dotenv\Dotenv;
 
 Dotenv::createImmutable(__DIR__)->load();
 
-function prepareAPIRequest($data)
+function prepareAPIRequest(array $data) : bool
 {
         if (!apiLogin($data["Username"], $data["Password"])) 
                 return;
