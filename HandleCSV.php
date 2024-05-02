@@ -48,27 +48,21 @@ class HandleCSV
 
                 if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
             }
-
             foreach ($newData as $row) {
-                fwrite($fp, implode(',', $row) . "\n");
+                try {
+                    fwrite($fp, implode(',', $row) . "\n");
+                } catch (Exception $e) {
+                    logThis(3, "An error occurred while writing to the file: " . $e->getMessage() . "\n" . $e);
+                    fclose($fp);
+                    break;
+                }
             }
 
             fclose($fp);
 
             echo "Data appended successfully.";
         } catch (Exception $e) {
-            echo "An error occurred: " . $e->getMessage();
+            logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
     }
 }
-
-// Example usage:
-HandleCSV::SAPFile('sap\mpesa\C2B.csv', array(
-    array('SE29X22D7P', '2024-05-03 08:15:20', '8835670', '2547832130953'),
-    array('SE32X62D8Q', '2024-05-03 08:15:20', '8835670', '2547832130953')
-));
-
-HandleCSV::transactionsFile('sap\transaction\transactions.csv', array(
-    array('SE29X22D7P', '2024-05-03 08:15:20'),
-    array('SE32X62D8Q', '2024-05-03 08:15:20')
-));

@@ -5,8 +5,10 @@ Dotenv::createImmutable(__DIR__)->load();
 
 function prepareAPIRequest(array $data) : bool
 {
-        if (!apiLogin($data["Username"], $data["Password"])) 
+        if (!apiLogin($data["Username"], $data["Password"])) {
+                logThis(2,  "AUTH_FAILED: " . 'Credentials past for auth are incorrect. Probably a not from the expected source');
                 return false;
+        }
 
         $secret_key     = $_ENV['SECRET_KEY'];
         $credit_account = $_ENV['CREDIT_ACCOUNT'];
@@ -26,8 +28,22 @@ function prepareAPIRequest(array $data) : bool
 
         $hash_generator = $secret_key . $type . $id . $time . $amount . $credit_account . $bill_ref . $msisdn . $name . 1; 
 
-        if(!compareHash($hash, $hash_generator)) 
-                return false;
+        if(!compareHash($hash, $hash_generator)) return false;
 
-        return prepareInsert($data);
+        logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
+
+        // Example usage:
+        try{
+                HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($data));
+        } catch(Exception $e) {
+                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
+        }
+
+        try{
+                HandleCSV::transactionsFile('sap\transaction\transactions.csv', array(array($id, $time)));
+        } catch(Exception $e) {
+                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
+        }
+
+        return true;
 }
