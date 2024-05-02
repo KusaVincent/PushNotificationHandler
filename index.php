@@ -9,6 +9,7 @@ require_once 'log_file.php';
 require_once 'HandleCSV.php';
 require_once 'api_login.php';
 require_once 'compare_hash.php';
+require_once 'check_duplicates.php';
 require_once 'prepare_request.php';
 
 // echo apiLogin('Devyani', '6Pm4WXtbeZ00cd7uF8zjwSleQk8');

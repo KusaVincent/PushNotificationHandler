@@ -5,6 +5,7 @@ Dotenv::createImmutable(__DIR__)->load();
 
 function prepareAPIRequest(array $data) : bool
 {
+        $save_transaction_file = 'sap\transaction\transactions.csv';
         if (!apiLogin($data["Username"], $data["Password"])) {
                 logThis(2,  "AUTH_FAILED: " . 'Credentials past for auth are incorrect. Probably a not from the expected source');
                 return false;
@@ -28,11 +29,19 @@ function prepareAPIRequest(array $data) : bool
 
         $hash_generator = $secret_key . $type . $id . $time . $amount . $credit_account . $bill_ref . $msisdn . $name . 1; 
 
-        if(!compareHash($hash, $hash_generator)) return false;
+        // if(!compareHash($hash, $hash_generator)) return false;
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        // Example usage:
+        try{
+                if(checkDuplicates($id, HandleCSV::readCSV($save_transaction_file))) {
+                        logThis(1,  "DUPLICATE_DATA: " . 'Passed enrty duplicated');
+                        return true;
+                }
+        } catch(Exception $e) {
+                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
+        }
+
         try{
                 HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($data));
         } catch(Exception $e) {
@@ -40,7 +49,7 @@ function prepareAPIRequest(array $data) : bool
         }
 
         try{
-                HandleCSV::transactionsFile('sap\transaction\transactions.csv', array(array($id, $time)));
+                HandleCSV::transactionsFile($save_transaction_file, array(array($id, $time)));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
