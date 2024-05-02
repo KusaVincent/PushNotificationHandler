@@ -63,12 +63,12 @@ class HandleCSV
 }
 
 // Example usage:
-HandleCSV::SAPFile('C2B.csv', array(
+HandleCSV::SAPFile('sap\mpesa\C2B.csv', array(
     array('SE29X22D7P', '2024-05-03 08:15:20', '8835670', '2547832130953'),
     array('SE32X62D8Q', '2024-05-03 08:15:20', '8835670', '2547832130953')
 ));
 
-HandleCSV::transactionsFile('transactions.csv', array(
+HandleCSV::transactionsFile('sap\transaction\transactions.csv', array(
     array('SE29X22D7P', '2024-05-03 08:15:20'),
     array('SE32X62D8Q', '2024-05-03 08:15:20')
 ));
