@@ -2,18 +2,18 @@
 
 class HandleCSV
 {
-    public function transactionsFile(string $csvFilePath, array $newData) : void
+    public static function transactionsFile(string $csvFilePath, array $newData) : void
     {
         $headerArray = array('MpesaRef', 'Timestamp');
 
-        $this->writeToFile($csvFilePath, $newData, $headerArray);
+        self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public function SAPFile(string $csvFilePath, array $newData) : void
+    public static function SAPFile(string $csvFilePath, array $newData) : void
     {
-        $headerArray = array('MpesaRef', 'Timestamp');
+        $headerArray = array('MpesaRef', 'Timestamp', 'shortcode', 'mobile');
 
-        $this->writeToFile($csvFilePath, $newData, $headerArray);
+        self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
     public static function readCSV(string $csvFilePath): array
@@ -35,7 +35,7 @@ class HandleCSV
         return $csvData;
     }
 
-    private function writeToFile(string $csvFilePath, array $newData, array $header): void
+    private static function writeToFile(string $csvFilePath, array $newData, array $header): void
     {
         try {
             if (!file_exists($csvFilePath)) {
@@ -45,7 +45,7 @@ class HandleCSV
                 fputcsv($fp, $header);
             } else {
                 $fp = fopen($csvFilePath, 'a');
-                
+
                 if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
             }
 
@@ -63,11 +63,12 @@ class HandleCSV
 }
 
 // Example usage:
-$csvFilePath = 'transactions.csv';
-$newData = array(
+HandleCSV::SAPFile('C2B.csv', array(
+    array('SE29X22D7P', '2024-05-03 08:15:20', '8835670', '2547832130953'),
+    array('SE32X62D8Q', '2024-05-03 08:15:20', '8835670', '2547832130953')
+));
+
+HandleCSV::transactionsFile('transactions.csv', array(
     array('SE29X22D7P', '2024-05-03 08:15:20'),
     array('SE32X62D8Q', '2024-05-03 08:15:20')
-);
-
-$handleCSV = new HandleCSV();
-$handleCSV->transactionsFile($csvFilePath, $newData);
+));
