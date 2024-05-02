@@ -6,7 +6,7 @@ Dotenv::createImmutable(__DIR__)->load();
 function prepareAPIRequest(array $data) : bool
 {
         if (!apiLogin($data["Username"], $data["Password"])) 
-                return;
+                return false;
 
         $secret_key     = $_ENV['SECRET_KEY'];
         $credit_account = $_ENV['CREDIT_ACCOUNT'];
@@ -27,7 +27,7 @@ function prepareAPIRequest(array $data) : bool
         $hash_generator = $secret_key . $type . $id . $time . $amount . $credit_account . $bill_ref . $msisdn . $name . 1; 
 
         if(!compareHash($hash, $hash_generator)) 
-                return;
+                return false;
 
         return prepareInsert($data);
 }

@@ -1,10 +1,16 @@
 <?php
+require_once 'vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+Dotenv::createImmutable(__DIR__)->load();
 
 require_once 'api_login.php';
 require_once 'compare_hash.php';
-require_once 'vendor/autoload.php';
 require_once 'prepare_request.php';
 
+// echo apiLogin('Devyani', '6Pm4WXtbeZ00cd7uF8zjwSleQk8');
+// exit();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $response = ['ResultCode' => 1, 'ResultDesc' => 'Invalid request method'];
     echo json_encode($response);
