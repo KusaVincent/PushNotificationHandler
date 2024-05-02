@@ -60,7 +60,7 @@ class HandleCSV
 
             fclose($fp);
 
-            echo "Data appended successfully.";
+            logThis(4, "Data appended successfully.");
         } catch (Exception $e) {
             logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
