@@ -47,6 +47,6 @@ if ($data === null || !prepareAPIRequest($data)) {
 
 $response = json_encode(['ResultCode' => 0, 'ResultDesc' => 'Data received successfully']);
 
-logThis(2,  "SUCCESS: " . $response);
+logThis(4,  "REQUEST_SUCCESSFUL: " . $response);
 
 echo $response;
