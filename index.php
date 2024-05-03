@@ -25,7 +25,7 @@ $postData = file_get_contents('php://input');
 
 logThis(1, "RECEIVED_PAYLOAD: " . $postData);
 
-if ($postData === false) {
+if (empty($postData) || $postData === false) {
     $response = json_encode(['ResultCode' => 1, 'ResultDesc' => 'Unable to get POST data']);
 
     logThis(2,  "EMPTY_PAYLOAD: " . $response);

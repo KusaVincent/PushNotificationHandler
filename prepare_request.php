@@ -6,6 +6,7 @@ Dotenv::createImmutable(__DIR__)->load();
 function prepareAPIRequest(array $data) : bool
 {
         $save_transaction_file = 'sap\transaction\transactions.csv';
+        
         if (!apiLogin($data["Username"], $data["Password"])) {
                 logThis(2,  "AUTH_FAILED: " . 'Credentials past for auth are incorrect. Probably a not from the expected source');
                 return false;
