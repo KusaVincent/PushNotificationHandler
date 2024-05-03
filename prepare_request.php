@@ -29,7 +29,7 @@ function prepareAPIRequest(array $data) : bool
 
         $hash_generator = $secret_key . $type . $id . $time . $amount . $credit_account . $bill_ref . $msisdn . $name . 1; 
 
-        // if(!compareHash($hash, $hash_generator)) return false;
+        if(!compareHash($hash, $hash_generator)) return false;
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
