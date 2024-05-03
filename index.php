@@ -12,12 +12,10 @@ require_once 'compare_hash.php';
 require_once 'check_duplicates.php';
 require_once 'prepare_request.php';
 
-// echo apiLogin('Devyani', '6Pm4WXtbeZ00cd7uF8zjwSleQk8');
-// exit();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $response = json_encode(['ResultCode' => 1, 'ResultDesc' => 'Invalid request method']);
 
-    logThis(2,  "WRONG_REQUEST_METHOD: " . $response);
+    logThis(2,  "WRONG_REQUEST_METHOD: " . $response . "\n Request Method: $_SERVER[REQUEST_METHOD]");
 
     echo $response;
     exit;
