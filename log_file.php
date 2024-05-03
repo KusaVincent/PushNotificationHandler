@@ -15,7 +15,7 @@ function logThis(int $LEVEL, string $logThis) {
             $logLevel = "DEBUG";
             break;
         default :
-            $logLevel = "SUCCESS";
+            $logLevel = "NOTICE";
     }
 
     $e = new Exception();
