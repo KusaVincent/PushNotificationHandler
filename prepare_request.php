@@ -33,7 +33,7 @@ function prepareAPIRequest(array $data) : bool
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        try{
+        try {
                 if(checkDuplicates($id, HandleCSV::readCSV($save_transaction_file))) {
                         logThis(1,  "DUPLICATE_DATA: " . 'Passed enrty duplicated');
                         return true;
@@ -42,13 +42,13 @@ function prepareAPIRequest(array $data) : bool
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
 
-        try{
+        try {
                 HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($data));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
 
-        try{
+        try {
                 HandleCSV::transactionsFile($save_transaction_file, array(array($id, $time)));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);

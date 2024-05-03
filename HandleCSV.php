@@ -18,25 +18,38 @@ class HandleCSV
 
     public static function readCSV(string $csvFilePath): array
     {
-        $csvData = array();
+        $csvData = [];
 
-        if (!file_exists($csvFilePath)) throw new Exception("The file does not exist.");
+        try {
+            if (!file_exists($csvFilePath))  throw new Exception("The file does not exist: $csvFilePath");
 
-        if (($handle = fopen($csvFilePath, "r")) === false) throw new Exception("Error opening the file.");
+            $handle = fopen($csvFilePath, "r");
 
-        fgetcsv($handle); // Skip the header row
+            if ($handle === false) throw new Exception("Error opening the file: $handle");
 
-        while (($row = fgetcsv($handle, 1000, ",")) !== false) {
-            $csvData[] = $row;
+            try {
+                fgetcsv($handle);
+
+                while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+                    $csvData[] = $row;
+                }
+            } catch (Exception $e) {
+                throw new Exception("Error reading CSV data: " . $e->getMessage());
+            } finally {
+                fclose($handle);
+            }
+
+        } catch (Exception $e) {
+            throw new Exception("An error occurred: " . $e->getMessage());
         }
-
-        fclose($handle);
 
         return $csvData;
     }
 
     private static function writeToFile(string $csvFilePath, array $newData, array $header): void
     {
+        $fp = null;
+
         try {
             if (!file_exists($csvFilePath)) {
                 $fp = fopen($csvFilePath, 'w');
@@ -48,21 +61,21 @@ class HandleCSV
 
                 if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
             }
+
             foreach ($newData as $row) {
                 try {
                     fwrite($fp, implode(',', $row) . "\n");
                 } catch (Exception $e) {
                     logThis(3, "An error occurred while writing to the file: " . $e->getMessage() . "\n" . $e);
-                    fclose($fp);
                     break;
                 }
             }
 
-            fclose($fp);
-
             logThis(4, "Data appended successfully.");
         } catch (Exception $e) {
             logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
+        } finally {
+            if ($fp) fclose($fp);
         }
     }
 }
