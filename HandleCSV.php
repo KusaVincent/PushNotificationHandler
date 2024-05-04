@@ -46,6 +46,29 @@ class HandleCSV
         return $csvData;
     }
 
+    public static function deleteOldEntry(string $csvFilePath)
+    {
+        try {
+            $rows = self::readCSV($csvFilePath);
+            $oldDate = date('Y-m-d', strtotime("-$_ENV[ARCHIVE_PERIOD] days"));
+
+            $filteredRows = array_filter($rows, function($row) use ($oldDate) {
+                $date = $row[1];
+                return strtotime($date) >= strtotime($oldDate);
+            });
+
+            if (!unlink($csvFilePath)) {
+                throw new Exception("Failed to delete file: $csvFilePath");
+            }
+
+            self::transactionsFile($csvFilePath, $filteredRows);
+
+            logThis(4, "Rows deleted successfully.");
+        } catch (Exception $e) {
+            logThis(1, "An error occurred: " . $e->getMessage() . $e);
+        }
+    }
+
     private static function writeToFile(string $csvFilePath, array $newData, array $header): void
     {
         $fp = null;

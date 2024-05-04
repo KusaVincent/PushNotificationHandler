@@ -5,7 +5,7 @@ Dotenv::createImmutable(__DIR__)->load();
 
 function prepareAPIRequest(array $data) : bool
 {
-        $save_transaction_file = 'sap\transaction\transactions.csv';
+        $save_transaction_file = $_ENV['TRANSACTION_FILE'];
         
         if (!apiLogin($data["Username"], $data["Password"])) {
                 logThis(2,  "AUTH_FAILED: " . 'Credentials past for auth are incorrect. Probably a not from the expected source');
@@ -55,7 +55,7 @@ function prepareAPIRequest(array $data) : bool
                         'Document Date' => date('Ymd', strtotime($created_at))
                 );
 
-                HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($sap_data));
+                HandleCSV::SAPFile($_ENV['SAP_FILE'], array($sap_data));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
