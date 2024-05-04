@@ -11,7 +11,7 @@ class HandleCSV
 
     public static function SAPFile(string $csvFilePath, array $newData) : void
     {
-        $headerArray = array('MpesaRef', 'Timestamp', 'shortcode', 'mobile');
+        $headerArray = array('Business Transaction', 'Amount', 'Text', 'Cust Code', 'Business Area', 'Profit Center', 'Posting Date', 'Document Date');
 
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }

@@ -44,7 +44,18 @@ function prepareAPIRequest(array $data) : bool
         }
 
         try {
-                HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($data));
+                $sap_data = array(
+                        'Business Transaction' => 'CUSTOMER ACCOUNTS',
+                        'Amount'        => $amount,
+                        'Text'          => "$id-$short_code-$msisdn",
+                        'Cust Code'     => $short_code,
+                        'Business Area' => 'YN01',
+                        'Profit Center' => 'PK00',
+                        'Posting Date'  => date('Ymd', strtotime($created_at)),
+                        'Document Date' => date('Ymd', strtotime($created_at))
+                );
+
+                HandleCSV::SAPFile('sap\mpesa\C2B.csv', array($sap_data));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }
