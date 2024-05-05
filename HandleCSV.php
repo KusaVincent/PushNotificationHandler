@@ -76,7 +76,7 @@ class HandleCSV
         $fp = null;
 
         try {
-            if (!file_exists($csvFilePath)) {
+            if (!file_exists($csvFilePath) || !filesize($csvFilePath)) {
                 $fp = fopen($csvFilePath, 'w');
                 if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
 
