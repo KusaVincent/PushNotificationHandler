@@ -1,16 +1,5 @@
 <?php
-require_once 'vendor/autoload.php';
-
-use Dotenv\Dotenv;
-
-Dotenv::createImmutable(__DIR__)->load();
-
-require_once 'log_file.php';
-require_once 'HandleCSV.php';
-require_once 'api_login.php';
-require_once 'compare_hash.php';
-require_once 'check_duplicates.php';
-require_once 'prepare_request.php';
+require_once 'load_files.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $response = json_encode(['ResultCode' => 1, 'ResultDesc' => 'Invalid request method']);

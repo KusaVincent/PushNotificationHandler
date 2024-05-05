@@ -5,15 +5,15 @@ Dotenv::createImmutable(__DIR__)->load();
 
 function prepareAPIRequest(array $data) : bool
 {
-        $save_transaction_file = $_ENV['TRANSACTION_FILE'];
+        $save_transaction_file = getEnvVariables('transaction_file');
         
         if (!apiLogin($data["Username"], $data["Password"])) {
-                logThis(2,  "AUTH_FAILED: " . 'Credentials past for auth are incorrect. Probably a not from the expected source');
+                logThis(2,  "AUTH_FAILED: " . 'Credentials passed for auth are incorrect. Probably not from the expected source');
                 return false;
         }
 
-        $secret_key     = $_ENV['SECRET_KEY'];
-        $credit_account = $_ENV['CREDIT_ACCOUNT'];
+        $secret_key     = getEnvVariables('secret_key');
+        $credit_account = getEnvVariables('credit_account');
 
         $hash       = $data["Hash"];
         $name       = $data["name"];
@@ -44,18 +44,20 @@ function prepareAPIRequest(array $data) : bool
         }
 
         try {
+                $formattedDate = date('Ymd', strtotime($created_at));
+
                 $sap_data = array(
-                        'Business Transaction' => 'CUSTOMER ACCOUNTS',
+                        'Business Transaction' => getEnvVariables('business_transaction'),
                         'Amount'        => $amount,
-                        'Text'          => "$id-$short_code-$msisdn",
+                        'Text'          => "$id-$short_code-+$msisdn",
                         'Cust Code'     => $short_code,
-                        'Business Area' => 'YN01',
-                        'Profit Center' => 'PK00',
-                        'Posting Date'  => date('Ymd', strtotime($created_at)),
-                        'Document Date' => date('Ymd', strtotime($created_at))
+                        'Business Area' => getEnvVariables('business_area'),
+                        'Profit Center' => getEnvVariables('profit_center'),
+                        'Posting Date'  => $formattedDate,
+                        'Document Date' => $formattedDate
                 );
 
-                HandleCSV::SAPFile($_ENV['SAP_FILE'], array($sap_data));
+                HandleCSV::SAPFile(getEnvVariables('sap_file'), array($sap_data));
         } catch(Exception $e) {
                 logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         }

@@ -48,9 +48,11 @@ class HandleCSV
 
     public static function deleteOldEntry(string $csvFilePath)
     {
+        $archivePeriod = getEnvVariables('archive_period');
+
         try {
             $rows = self::readCSV($csvFilePath);
-            $oldDate = date('Y-m-d', strtotime("-$_ENV[ARCHIVE_PERIOD] days"));
+            $oldDate = date('Y-m-d', strtotime("-$archivePeriod days"));
 
             $filteredRows = array_filter($rows, function($row) use ($oldDate) {
                 $date = $row[1];
