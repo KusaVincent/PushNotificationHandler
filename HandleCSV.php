@@ -75,6 +75,8 @@ class HandleCSV
     {
         $fp = null;
 
+        if($csvFilePath == '') throw new Exception('File name and path cannot be empty');
+
         try {
             if (!file_exists($csvFilePath) || !filesize($csvFilePath)) {
                 $fp = fopen($csvFilePath, 'w');

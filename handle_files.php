@@ -18,7 +18,8 @@ function writeTransactionFile($id, $time, $save_transaction_file) : void {
             HandleCSV::transactionsFile($save_transaction_file, array(array($id, $time)));
     } catch(Exception $e) {
             logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
-    }  
+            throw new Exception($e);
+    }
 }
 
 function writeSAPFile($id, $msisdn, $amount, $created_at, $short_code) : void {
@@ -39,5 +40,6 @@ function writeSAPFile($id, $msisdn, $amount, $created_at, $short_code) : void {
             HandleCSV::SAPFile(getEnvVariables('sap_file'), array($sap_data));
     } catch(Exception $e) {
             logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
+            throw new Exception($e);
     }
 }

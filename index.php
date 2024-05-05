@@ -23,19 +23,24 @@ if (empty($postData) || $postData === false) {
     exit;
 }
 
-$data = json_decode($postData, true);
+try {
+    $data = json_decode($postData, true);
 
-if ($data === null || !prepareAPIRequest($data)) {
-    $response = json_encode(['ResultCode' => 1, 'ResultDesc' => 'Invalid JSON data']);
+    if ($data === null || !prepareAPIRequest($data)) {
+        $response = json_encode(['ResultCode' => 1, 'ResultDesc' => 'Invalid JSON data']);
 
-    logThis(2, $response);
+        logThis(2, $response);
+
+        echo $response;
+        exit;
+    } 
+
+    $response = json_encode(['ResultCode' => 0, 'ResultDesc' => 'Data received successfully']);
+
+    logThis(4,  "REQUEST_SUCCESSFUL: " . $response);
 
     echo $response;
-    exit;
-} 
-
-$response = json_encode(['ResultCode' => 0, 'ResultDesc' => 'Data received successfully']);
-
-logThis(4,  "REQUEST_SUCCESSFUL: " . $response);
-
-echo $response;
+} catch(Exception $e) {
+    logThis(2, "UNHANDLED_EXCEPTION: " . $e->getMessage() . "\n" . $e);
+    echo json_encode(['ResultCode' => 1, 'ResultDesc' => 'An error occured']);
+}
