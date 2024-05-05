@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Africa/Nairobi');
 
 require_once 'get_env.php';
 require_once 'log_file.php';

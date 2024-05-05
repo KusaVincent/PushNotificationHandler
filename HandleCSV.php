@@ -2,22 +2,19 @@
 
 class HandleCSV
 {
-    public static function transactionsFile(string $csvFilePath, array $newData) : void
-    {
+    public static function transactionsFile(string $csvFilePath, array $newData) : void {
         $headerArray = array('MpesaRef', 'Timestamp');
 
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public static function SAPFile(string $csvFilePath, array $newData) : void
-    {
+    public static function SAPFile(string $csvFilePath, array $newData) : void {
         $headerArray = array('Business Transaction', 'Amount', 'Text', 'Cust Code', 'Business Area', 'Profit Center', 'Posting Date', 'Document Date');
 
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public static function readCSV(string $csvFilePath): array
-    {
+    public static function readCSV(string $csvFilePath): array {
         $csvData = [];
 
         try {
@@ -46,8 +43,7 @@ class HandleCSV
         return $csvData;
     }
 
-    public static function deleteOldEntry(string $csvFilePath) : void
-    {
+    public static function deleteOldEntry(string $csvFilePath) : void {
         $archivePeriod = getEnvVariables('archive_period');
 
         try {
@@ -71,8 +67,7 @@ class HandleCSV
         }
     }
 
-    private static function writeToFile(string $csvFilePath, array $newData, array $header): void
-    {
+    private static function writeToFile(string $csvFilePath, array $newData, array $header): void {
         $fp = null;
 
         if($csvFilePath == '') throw new Exception('File name and path cannot be empty');

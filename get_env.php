@@ -5,8 +5,7 @@ use Dotenv\Dotenv;
 
 Dotenv::createImmutable(__DIR__)->load();
 
-function getEnvVariables(string $envVariable) : string | int
-{
+function getEnvVariables(string $envVariable) : string | int {
     try {
         return getVar($envVariable);
     } catch (Exception $e) {

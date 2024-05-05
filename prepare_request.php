@@ -3,8 +3,7 @@ use Dotenv\Dotenv;
 
 Dotenv::createImmutable(__DIR__)->load();
 
-function prepareAPIRequest(array $data) : bool
-{
+function prepareAPIRequest(array $data) : bool {
         $save_transaction_file = getEnvVariables('transaction_file');
         
         if (!apiLogin($data["Username"], $data["Password"])) {

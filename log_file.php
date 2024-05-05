@@ -1,9 +1,8 @@
 <?php
 
-function logThis(int $LEVEL, string $logThis) : void
-{
+function logThis(int $LEVEL, string $logThis) : void {
     $logLevel = "";
-    $logFile = 'sap\logs\notifications.log';
+    $logFile = getEnvVariables('log_file');
 
     switch ($LEVEL) {
         case 1:
