@@ -46,7 +46,7 @@ class HandleCSV
         return $csvData;
     }
 
-    public static function deleteOldEntry(string $csvFilePath)
+    public static function deleteOldEntry(string $csvFilePath) : void
     {
         $archivePeriod = getEnvVariables('archive_period');
 

@@ -1,6 +1,7 @@
 <?php
 
-function logThis(int $LEVEL, string $logThis) {
+function logThis(int $LEVEL, string $logThis) : void
+{
     $logLevel = "";
     $logFile = 'sap\logs\notifications.log';
 

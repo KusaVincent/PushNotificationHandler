@@ -6,7 +6,7 @@ use phpseclib3\Net\SFTP;
 
 class FileTransfer
 {
-    public function ftpUpload(string $localFile, string $remoteFile, string $hostname, string $username, string $password, ?int $port = null): bool
+    public function ftpUpload(string $localFile, string $remoteFile, string $hostname, string $username, string $password, ?int $port = null) : bool
     {
         if($port === null) {
             $ftp = new SFTP($hostname);

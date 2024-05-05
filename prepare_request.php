@@ -12,61 +12,22 @@ function prepareAPIRequest(array $data) : bool
                 return false;
         }
 
-        $secret_key     = getEnvVariables('secret_key');
-        $credit_account = getEnvVariables('credit_account');
-
-        $hash       = $data["Hash"];
-        $name       = $data["name"];
         $msisdn     = $data["Mobile"];
         $id         = $data["TransID"];
-        $type       = $data["TransType"];
         $time       = $data["TransTime"];
         $created_at = $data["created_at"];
-        $bill_ref   = $data["BillRefNumber"];
         $short_code = $data["BusinessShortCode"];
         $amount     = str_replace(',', '', number_format($data["TransAmount"], 1));
 
-        // Hash_generator  = SecretKey + TransType + TransID + TransactionTime + TransAmount + CreditAccount + BillRefNumber + MSISDN + Name + "1"
-
-        $hash_generator = $secret_key . $type . $id . $time . $amount . $credit_account . $bill_ref . $msisdn . $name . 1; 
-
-        if(!compareHash($hash, $hash_generator)) return false;
+        if(!buildAndCompareHash($data, $amount)) return false;
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        try {
-                if(checkDuplicates($id, HandleCSV::readCSV($save_transaction_file))) {
-                        logThis(1,  "DUPLICATE_DATA: " . 'Passed enrty duplicated');
-                        return true;
-                }
-        } catch(Exception $e) {
-                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
-        }
+        handlesTransactionFile($id, $save_transaction_file);
 
-        try {
-                $formattedDate = date('Ymd', strtotime($created_at));
-
-                $sap_data = array(
-                        'Business Transaction' => getEnvVariables('business_transaction'),
-                        'Amount'        => $amount,
-                        'Text'          => "$id-$short_code-+$msisdn",
-                        'Cust Code'     => $short_code,
-                        'Business Area' => getEnvVariables('business_area'),
-                        'Profit Center' => getEnvVariables('profit_center'),
-                        'Posting Date'  => $formattedDate,
-                        'Document Date' => $formattedDate
-                );
-
-                HandleCSV::SAPFile(getEnvVariables('sap_file'), array($sap_data));
-        } catch(Exception $e) {
-                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
-        }
-
-        try {
-                HandleCSV::transactionsFile($save_transaction_file, array(array($id, $time)));
-        } catch(Exception $e) {
-                logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
-        }
+        writeSAPFile($id, $msisdn, $amount, $created_at, $short_code);
+        
+        writeTransactionFile($id, $time, $save_transaction_file);
 
         return true;
 }
