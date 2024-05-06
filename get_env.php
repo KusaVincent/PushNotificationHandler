@@ -18,6 +18,5 @@ function getEnvVariables(string $envVariable): string | int
 
 function getVar(string $envVariable): string | int
 {
-
     return isset($_ENV[strtoupper($envVariable)]) ? $_ENV[strtoupper($envVariable)] : throw new Exception("Variable $envVariable not set");
 }

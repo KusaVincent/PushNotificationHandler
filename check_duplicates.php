@@ -6,8 +6,7 @@ function checkDuplicates(string $mpesaRef, array $csvData) : bool {
     return linearSearch($mpesaRef, $csvData);
 }
 
-function linearSearch(string $mpesaRef, array $csvData): bool
-{
+function linearSearch(string $mpesaRef, array $csvData): bool {
     foreach ($csvData as $row) {
         if ($row[0] === $mpesaRef) {
             logThis(1, $mpesaRef . ' : is duplicated');
@@ -18,10 +17,9 @@ function linearSearch(string $mpesaRef, array $csvData): bool
     return false;
 }
 
-function binarySearch(string $mpesaRef, array $csvData): bool
-{
+function binarySearch(string $mpesaRef, array $csvData): bool {
     $left = 0;
-    $right = count($csvData) - 1;
+    $right = sizeof($csvData) - 1;
 
     while ($left <= $right) {
         $mid = floor(($left + $right) / 2);
