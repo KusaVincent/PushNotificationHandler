@@ -22,7 +22,7 @@ function prepareAPIRequest(array $data) : bool {
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        handlesTransactionFile($id, $save_transaction_file);
+        if(handlesTransactionFile($id, $save_transaction_file)) return true;
 
         writeSAPFile($id, $msisdn, $amount, $created_at, $short_code);
         
