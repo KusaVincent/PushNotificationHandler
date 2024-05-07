@@ -5,11 +5,20 @@ use Dotenv\Dotenv;
 
 Dotenv::createImmutable(__DIR__)->load();
 
-function getEnvVariables(string $envVariable): string | int
+function getEnvVariables(string $envVariable) : string | int
 {
     try {
-        if(str_contains($envVariable, 'file')) return ROOT_PATH . '../' . getVar($envVariable);
-        
+        if(str_contains($envVariable, '_file')) {
+            $file_path =  ROOT_PATH . '../' . getVar($envVariable);
+            $directoryPath = dirname($file_path);
+
+            if (file_exists($directoryPath) && is_dir($directoryPath)) {
+                return $file_path;
+            }
+
+            throw new Exception("Variable $envVariable not set");
+        }
+
         return getVar($envVariable);
     } catch (Exception $e) {
         if ($envVariable !== 'log_file')
@@ -18,7 +27,7 @@ function getEnvVariables(string $envVariable): string | int
     }
 }
 
-function getVar(string $envVariable): string | int
+function getVar(string $envVariable) : string | int
 {
     return isset($_ENV[strtoupper($envVariable)]) ? $_ENV[strtoupper($envVariable)] : throw new Exception("Variable $envVariable not set");
 }

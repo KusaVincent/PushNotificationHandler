@@ -6,10 +6,11 @@ function api_entry(string $api_type = 'confirmation') {
     $failure_status = 1;
     $success_status = 0;
 
-    $write          = true;
-    $status         = 'ResultCode';
-    $description    = 'ResultDesc';
-    $sucess_message = 'Data received successfully';
+    $write           = true;
+    $status          = 'ResultCode';
+    $description     = 'ResultDesc';
+    $failure_message = 'Invalid JSON data';
+    $sucess_message  = 'Data received successfully';
 
     $check_file = getEnvVariables('transaction_file');
 
@@ -17,10 +18,11 @@ function api_entry(string $api_type = 'confirmation') {
         $failure_status = 0;
         $success_status = 1;
 
-        $write          = false;
-        $status         = 'STATUS';
-        $description    = 'DESCRIPTION';
-        $sucess_message = 'Validation successful';
+        $write           = false;
+        $status          = 'STATUS';
+        $description     = 'DESCRIPTION';
+        $failure_message = 'Validation failed';
+        $sucess_message  = 'Validation successful';
         
         $check_file = getEnvVariables('validation_file');
     }
@@ -52,7 +54,7 @@ function api_entry(string $api_type = 'confirmation') {
             $data = json_decode($postData, true);
     
             if ($data === null || !prepareAPIRequest($data, $check_file, $write)) {
-                $response = json_encode([$status => $failure_status, $description => 'Invalid JSON data']);
+                $response = json_encode([$status => $failure_status, $description => $failure_message]);
     
                 logThis(2, $response);
     

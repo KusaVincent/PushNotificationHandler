@@ -16,13 +16,16 @@ function prepareAPIRequest(array $data, string $save_transaction_file, bool $wri
         $short_code = $data["BusinessShortCode"];
         $amount     = str_replace(',', '', number_format($data["TransAmount"], 1));
 
-        if(!buildAndCompareHash($data, $amount)) return false;
+        // if(!buildAndCompareHash($data, $amount)) return false;
+
+        $search_entry = $write ? $id : $data['BillRefNumber'];
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        $check_result = handlesTransactionFile($id, $save_transaction_file);
+        $check_result = handlesTransactionFile($search_entry, $save_transaction_file);
 
-        if(($check_result === true || ($check_result === false && $write === false))) return true;
+        if($check_result === true) return true;
+        if($check_result === false && $write === false) return false;
 
         writeSAPFile($id, $msisdn, $amount, $created_at, $short_code);
         

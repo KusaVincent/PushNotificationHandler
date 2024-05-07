@@ -3,7 +3,7 @@
 function handlesTransactionFile($id, $save_transaction_file) : bool {
     try {
             if(validateORCheckDuplicates($id, HandleCSV::readCSV($save_transaction_file))) {
-                    logThis(1,  "DUPLICATE_DATA: " . 'Passed entry duplicated');
+                    logThis(1,  "DUPLICATE_DATA: " . 'Passed entry found');
                     return true;
             }
     } catch(Exception $e) {

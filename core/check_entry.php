@@ -1,15 +1,15 @@
 <?php
 
-function validateORCheckDuplicates(string $mpesaRef, array $csvData) : bool {
-    if(sizeof($csvData) > getEnvVariables('file_size')) return binarySearch($mpesaRef, $csvData);
+function validateORCheckDuplicates(string $search_entry, array $csvData) : bool {
+    if(sizeof($csvData) > getEnvVariables('file_size')) return binarySearch($search_entry, $csvData);
     
-    return linearSearch($mpesaRef, $csvData);
+    return linearSearch($search_entry, $csvData);
 }
 
-function linearSearch(string $mpesaRef, array $csvData): bool {
+function linearSearch(string $search_entry, array $csvData): bool {
     foreach ($csvData as $row) {
-        if ($row[0] === $mpesaRef) {
-            logThis(1, $mpesaRef . ' : is duplicated');
+        if ($row[0] === $search_entry) {
+            logThis(1, $search_entry . ' : is found');
             return true;
         }
     }
@@ -17,19 +17,19 @@ function linearSearch(string $mpesaRef, array $csvData): bool {
     return false;
 }
 
-function binarySearch(string $mpesaRef, array $csvData): bool {
+function binarySearch(string $search_entry, array $csvData): bool {
     $left = 0;
     $right = sizeof($csvData) - 1;
 
     while ($left <= $right) {
         $mid = floor(($left + $right) / 2);
 
-        if ($csvData[$mid][0] === $mpesaRef) {
-            logThis(1, $mpesaRef . ' : is duplicated');
+        if ($csvData[$mid][0] === $search_entry) {
+            logThis(1, $search_entry . ' : is found');
             return true;
         }
 
-        if ($csvData[$mid][0] < $mpesaRef) {
+        if ($csvData[$mid][0] < $search_entry) {
             $left = $mid + 1;
         } else {
             $right = $mid - 1;
