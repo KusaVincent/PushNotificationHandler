@@ -14,6 +14,8 @@ function linearSearch(string $search_entry, array $csvData): bool {
         }
     }
 
+    logThis(1, $search_entry . ' : is not found');
+
     return false;
 }
 
@@ -35,6 +37,8 @@ function binarySearch(string $search_entry, array $csvData): bool {
             $right = $mid - 1;
         }
     }
+    
+    logThis(1, $search_entry . ' : is not found');
 
     return false;
 }

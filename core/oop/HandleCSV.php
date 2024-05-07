@@ -14,7 +14,7 @@ class HandleCSV
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public static function readCSV(string $csvFilePath): array {
+    public static function readCSV(string $csvFilePath, bool $read_first_line = false): array {
         $csvData = [];
 
         try {
@@ -25,7 +25,7 @@ class HandleCSV
             if ($handle === false) throw new Exception("Error opening the file: $handle");
 
             try {
-                fgetcsv($handle);
+                if(!$read_first_line) fgetcsv($handle);
 
                 while (($row = fgetcsv($handle, 1000, ",")) !== false) {
                     $csvData[] = $row;

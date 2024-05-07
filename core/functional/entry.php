@@ -6,7 +6,7 @@ function api_entry(string $api_type = 'confirmation') {
     $failure_status = 1;
     $success_status = 0;
 
-    $write           = true;
+    $validate        = false;
     $status          = 'ResultCode';
     $description     = 'ResultDesc';
     $failure_message = 'Invalid JSON data';
@@ -18,7 +18,7 @@ function api_entry(string $api_type = 'confirmation') {
         $failure_status = 0;
         $success_status = 1;
 
-        $write           = false;
+        $validate        = true;
         $status          = 'STATUS';
         $description     = 'DESCRIPTION';
         $failure_message = 'Validation failed';
@@ -53,7 +53,7 @@ function api_entry(string $api_type = 'confirmation') {
         try {
             $data = json_decode($postData, true);
     
-            if ($data === null || !prepareAPIRequest($data, $check_file, $write)) {
+            if ($data === null || !prepareAPIRequest($data, $check_file, $validate)) {
                 $response = json_encode([$status => $failure_status, $description => $failure_message]);
     
                 logThis(2, $response);

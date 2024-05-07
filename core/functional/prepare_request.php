@@ -3,7 +3,7 @@ use Dotenv\Dotenv;
 
 Dotenv::createImmutable(__DIR__)->load();
 
-function prepareAPIRequest(array $data, string $save_transaction_file, bool $write) : bool {
+function prepareAPIRequest(array $data, string $save_transaction_file, bool $validate) : bool {
         if (!apiLogin($data["Username"], $data["Password"])) {
                 logThis(2,  "AUTH_FAILED: " . 'Credentials passed for auth are incorrect. Probably not from the expected source');
                 return false;
@@ -18,14 +18,14 @@ function prepareAPIRequest(array $data, string $save_transaction_file, bool $wri
 
         if(!buildAndCompareHash($data, $amount)) return false;
 
-        $search_entry = $write ? $id : $data['BillRefNumber'];
+        $search_entry = $validate ? $data['BillRefNumber'] : $id;
 
         logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
 
-        $check_result = handlesTransactionFile($search_entry, $save_transaction_file);
+        $check_result = handlesTransactionFile($search_entry, $save_transaction_file, $validate);
 
-        if($check_result === true) return true;
-        if($check_result === false && $write === false) return false;
+        if($check_result) return true;
+        if(!$check_result && $validate) return false;
 
         writeSAPFile($id, $msisdn, $amount, $created_at, $short_code);
         

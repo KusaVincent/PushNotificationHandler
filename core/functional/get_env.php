@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once ROOT_PATH . 'vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
@@ -9,7 +9,7 @@ function getEnvVariables(string $envVariable) : string | int
 {
     try {
         if(str_contains($envVariable, '_file')) {
-            $file_path =  ROOT_PATH . '../' . getVar($envVariable);
+            $file_path =  SAP_PATH . getVar($envVariable);
             $directoryPath = dirname($file_path);
 
             if (file_exists($directoryPath) && is_dir($directoryPath)) {

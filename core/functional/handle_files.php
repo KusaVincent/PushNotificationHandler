@@ -1,8 +1,8 @@
 <?php
 
-function handlesTransactionFile($id, $save_transaction_file) : bool {
+function handlesTransactionFile($id, $save_transaction_file, $validate_first_line) : bool {
     try {
-            if(validateORCheckDuplicates($id, HandleCSV::readCSV($save_transaction_file))) {
+            if(validateORCheckDuplicates($id, HandleCSV::readCSV($save_transaction_file, $validate_first_line))) {
                     logThis(1,  "DUPLICATE_DATA: " . 'Passed entry found');
                     return true;
             }

@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/log_file.php';
-require __DIR__ . '/../vendor/autoload.php';
+require ROOT_PATH .'vendor/autoload.php';
+require FUNC_PATH. 'functional/log_file.php';
 
 use phpseclib3\Net\SFTP;
 
