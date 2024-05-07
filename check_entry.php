@@ -1,6 +1,6 @@
 <?php
 
-function checkDuplicates(string $mpesaRef, array $csvData) : bool {
+function validateORCheckDuplicates(string $mpesaRef, array $csvData) : bool {
     if(sizeof($csvData) > getEnvVariables('file_size')) return binarySearch($mpesaRef, $csvData);
     
     return linearSearch($mpesaRef, $csvData);
