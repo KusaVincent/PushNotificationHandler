@@ -8,6 +8,8 @@ Dotenv::createImmutable(__DIR__)->load();
 function getEnvVariables(string $envVariable): string | int
 {
     try {
+        if(str_contains($envVariable, 'file')) return ROOT_PATH . getVar($envVariable);
+        
         return getVar($envVariable);
     } catch (Exception $e) {
         if ($envVariable !== 'log_file')
