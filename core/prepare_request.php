@@ -16,7 +16,7 @@ function prepareAPIRequest(array $data, string $save_transaction_file, bool $wri
         $short_code = $data["BusinessShortCode"];
         $amount     = str_replace(',', '', number_format($data["TransAmount"], 1));
 
-        // if(!buildAndCompareHash($data, $amount)) return false;
+        if(!buildAndCompareHash($data, $amount)) return false;
 
         $search_entry = $write ? $id : $data['BillRefNumber'];
 
