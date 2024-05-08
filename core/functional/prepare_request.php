@@ -20,7 +20,7 @@ function prepareAPIRequest(array $data, string $save_transaction_file, bool $val
 
         $search_entry = $validate ? $data['BillRefNumber'] : $id;
 
-        logThis(1,  "NOTIFICATION_DATA: " . json_encode($data));
+        logThis(1,  "PASSED_DATA: " . json_encode($data));
 
         $check_result = handlesTransactionFile($search_entry, $save_transaction_file, $validate);
 
