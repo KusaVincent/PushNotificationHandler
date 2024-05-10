@@ -2,15 +2,16 @@
 
 function buildAndCompareHash(array $data, string $amount) : bool {
     $hash           = $data["Hash"];
-    $secret_key     = getEnvVariables('secret_key');
     $credit_account = getEnvVariables('credit_account');
 
     // Hash_GeneratorForValidation       = SecretKey + TransType + TransID + TransactionTime + TransAmount + BillRefNumber + MSISDN + Name
     // Hash_GeneratorForPushNotification = SecretKey + TransType + TransID + TransactionTime + TransAmount + CreditAccount + BillRefNumber + MSISDN + Name + "1"
 
     if(isset($data['Name'])) { //validation
+        $secret_key     = getEnvVariables('validation_secret_key');
         $hash_generator = $secret_key . $data["TransType"] . $data["TransID"] . $data["TransTime"] . $data["TransAmount"] . $data["BillRefNumber"] . $data["Mobile"] . $data['Name']; 
     } else {
+        $secret_key     = getEnvVariables('confirmation_secret_key');
         $hash_generator = $secret_key . $data["TransType"] . $data["TransID"] . $data["TransTime"] . $amount . $credit_account . $data["BillRefNumber"] . $data["Mobile"] . $data['name'] . 1; 
     }
 
