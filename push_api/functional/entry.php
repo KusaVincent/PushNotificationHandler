@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ .  '/load_files.php';
 
-function api_entry(string $api_type = 'confirmation') {
+function api_entry() {
 
     $failure_status = 1;
     $success_status = 0;
