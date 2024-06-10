@@ -22,14 +22,14 @@ function writeTransactionFile($id, $time, $save_transaction_file) : void {
     }
 }
 
-function writeSAPFile($id, $msisdn, $amount, $created_at, $short_code) : void {
+function writeSAPFile($id, $name, $amount, $created_at, $short_code) : void {
     try {
             $formattedDate = date('Ymd', strtotime($created_at));
 
             $sap_data = array(
                     'Business Transaction' => getEnvVariables('business_transaction'),
                     'Amount'        => $amount,
-                    'Text'          => "$id-$short_code-+$msisdn",
+                    'Text'          => "$id-$short_code-$name",
                     'Cust Code'     => $short_code,
                     'Business Area' => getEnvVariables('business_area'),
                     'Profit Center' => getEnvVariables('profit_center'),

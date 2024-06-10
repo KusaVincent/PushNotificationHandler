@@ -9,9 +9,9 @@ function prepareAPIRequest(array $data, string $save_transaction_file) : bool {
                 return false;
         }
 
-        $msisdn     = $data["Mobile"];
         $id         = $data["TransID"];
         $time       = $data["TransTime"];
+        $name       = trim($data["name"]);
         $created_at = $data["created_at"];
         $short_code = $data["BusinessShortCode"];
         $amount     = str_replace(',', '', number_format($data["TransAmount"], 1));
@@ -24,7 +24,7 @@ function prepareAPIRequest(array $data, string $save_transaction_file) : bool {
 
         if($check_result) return true;
 
-        writeSAPFile($id, $msisdn, $amount, $created_at, $short_code);
+        writeSAPFile($id, $name, $amount, $created_at, $short_code);
         
         writeTransactionFile($id, $time, $save_transaction_file);
 
