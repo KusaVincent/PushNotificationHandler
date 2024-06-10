@@ -3,6 +3,6 @@ require_once __DIR__ .  '/../../push_api/functional/load_files.php';
 
 require_once EMAIL_ALERT_PATH . 'EmailHelper.php';
 
-$email = (new EmailHelper())->send(['vinonyi21@gmail.com'], 'nothings', 'another nothing', 'more nothing');
+$email = (new EmailHelper())->send(['vinonyi21@gmail.com'], 'nothings', 'another nothing', 'more nothing', getEnvVariables('sap_file'));
 
 logThis(4, json_encode($email));

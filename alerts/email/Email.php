@@ -31,7 +31,7 @@ class Email
         }
     }
 
-    public function send(array $emails, string $subject, string $header, string $message): array
+    public function send(array $emails, string $subject, string $header, string $message, ?string $attachment = null): array
     {
         $results = [];
 
@@ -44,6 +44,7 @@ class Email
                 $this->mailer->SetFrom($this->senderEmail, $header);
                 $this->mailer->Body = $message;
                 $this->mailer->AddAddress($email);
+                if(null !== $attachment) $this->mailer->addAttachment($attachment);
 
                 if ($this->mailer->Send()) $results[$email] = true;
             } catch (\Exception $e) {
