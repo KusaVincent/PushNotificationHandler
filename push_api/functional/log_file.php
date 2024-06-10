@@ -3,6 +3,7 @@
 function logThis(int $LEVEL, string $logThis) : void {
     $logLevel = "";
     $logFile = getEnvVariables('log_file') ?? throw new Exception("Log file not found");
+    // $logFile .= '-' . date("Y-m-d");
 
     switch ($LEVEL) {
         case 1:

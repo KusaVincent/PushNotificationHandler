@@ -9,7 +9,7 @@ function getEnvVariables(string $envVariable) : string | int
 {
     try {
         if(str_contains($envVariable, '_file')) {
-            $file_path =  SAP_PATH . getVar($envVariable);
+            $file_path =  PUBLIC_PATH . getVar($envVariable);
             $directoryPath = dirname($file_path);
 
             if (file_exists($directoryPath) && is_dir($directoryPath)) {
