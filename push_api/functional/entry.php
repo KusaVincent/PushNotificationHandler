@@ -15,7 +15,7 @@ function api_entry() {
 
     try {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $response = json_encode([$status => $failure_status, $description => 'Invalid request method']);
+            $response = json_response(400, [$status => $failure_status, $description => 'Invalid request method']);
     
             logThis(2,  "WRONG_REQUEST_METHOD: " . $response . "\n Request Method: $_SERVER[REQUEST_METHOD]");
     
@@ -28,7 +28,7 @@ function api_entry() {
         logThis(1, "RECEIVED_PAYLOAD: " . $postData);
     
         if (empty($postData) || $postData === false) {
-            $response = json_encode([$status => $failure_status, $description => 'Unable to get POST data']);
+            $response = json_response(403, [$status => $failure_status, $description => 'Unable to get POST data']);
     
             logThis(2,  "EMPTY_PAYLOAD: " . $response);
     
@@ -40,7 +40,7 @@ function api_entry() {
             $data = json_decode($postData, true);
     
             if ($data === null || !prepareAPIRequest($data, $check_file)) {
-                $response = json_encode([$status => $failure_status, $description => $failure_message]);
+                $response = json_response(401, [$status => $failure_status, $description => $failure_message]);
     
                 logThis(2, $response);
     
@@ -48,16 +48,16 @@ function api_entry() {
                 exit;
             }
     
-            $response = json_encode([$status => $success_status, $description => $sucess_message]);
+            $response = json_response(200, [$status => $success_status, $description => $sucess_message]);
     
             logThis(4,  "REQUEST_SUCCESSFUL: " . $response);
     
             echo $response;
         } catch (Exception $e) {
             logThis(2, "UNHANDLED_EXCEPTION: " . $e->getMessage() . "\n" . $e);
-            echo json_encode([$status => $failure_status, $description => 'An error occured']);
+            echo json_response(400, [$status => $failure_status, $description => 'An error occured']);
         }
     } catch (Exception $e) {
-        echo json_encode([$status => $failure_status, $description => 'We faced an error.']);
+        echo json_response(400, [$status => $failure_status, $description => 'We faced an error.']);
     }
 }

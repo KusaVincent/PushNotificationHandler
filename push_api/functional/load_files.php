@@ -3,6 +3,7 @@ require_once __DIR__ .  '/../../path.php';
 
 date_default_timezone_set('Africa/Nairobi');
 
+require_once FUNC_PATH . 'json.php';
 require_once FUNC_PATH . 'get_env.php';
 require_once FUNC_PATH . 'log_file.php';
 require_once FUNC_PATH . 'api_login.php';
