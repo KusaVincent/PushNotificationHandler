@@ -17,4 +17,5 @@ echo "=======================end RENAME==============================="
 echo "===========================SAP=================================="
 scp /public/confirmation/*$append_name $destination
 mv /public/confirmation/*$append_name /public/confirmation_archive/
+gzip /public/confirmation_archive/*
 echo "===========================END SAP=============================="
