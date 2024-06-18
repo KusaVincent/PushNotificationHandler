@@ -12,7 +12,7 @@ function json_response(int $code = 200, array $message) : string
         400 => 'Bad Request',
         403 => 'Forbidden',
         401 => 'Unauthorized'
-    ]
+    ];
 
     header('Status: '. $status[$code]);
 
