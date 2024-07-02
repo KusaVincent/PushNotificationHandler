@@ -46,5 +46,4 @@ class SMS extends CelcomSMS
     }
 }
 
-
 echo (new SMS('254712345678', 'test'))->send();
