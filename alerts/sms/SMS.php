@@ -27,7 +27,7 @@ class SMS extends CelcomSMS
             'partnerID' => $this->partnerID,
             'apikey' => $this->apiKey,
             'pass_type' => 'plain',
-            "clientsmsid" => 178234,
+            // "clientsmsid" => 17824,
             'mobile' => $this->mobile,
             'message' => $this->message,
             'shortcode' => $this->shortCode,
@@ -38,7 +38,7 @@ class SMS extends CelcomSMS
         ];
 
         $postData = [
-            'count' => 1,
+            'count' => 0,
             'smslist' => $this->smsList
         ];
 

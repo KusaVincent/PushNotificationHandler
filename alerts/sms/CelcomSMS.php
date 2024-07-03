@@ -2,8 +2,8 @@
 
 class CelcomSMS
 {
-    private $curl;
-    private $headers;
+    private object $curl;
+    private array $headers;
 
     public function __construct(private string $url, private string $postData)
     {
