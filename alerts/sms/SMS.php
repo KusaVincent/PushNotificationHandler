@@ -38,7 +38,7 @@ class SMS extends CelcomSMS
         ];
 
         $postData = [
-            'count' => 0,
+            'count' => 1,
             'smslist' => $this->smsList
         ];
 
