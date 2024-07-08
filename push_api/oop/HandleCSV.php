@@ -2,30 +2,43 @@
 
 class HandleCSV
 {
-    public static function transactionsFile(string $csvFilePath, array $newData) : void {
+    public static function smsFile(string $csvFilePath, array $smsData): void
+    {
+        $headerArray = array('BillReference', 'Name', 'MpesaRef', 'Amount', 'CreatedAt');
+
+        self::writeToFile($csvFilePath, $smsData, $headerArray);
+    }
+
+    public static function transactionsFile(string $csvFilePath, array $newData): void
+    {
         $headerArray = array('MpesaRef', 'Timestamp');
 
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public static function SAPFile(string $csvFilePath, array $newData) : void {
+    public static function SAPFile(string $csvFilePath, array $newData): void
+    {
         $headerArray = array('Business Transaction', 'Amount', 'Text', 'Cust Code', 'Business Area', 'Profit Center', 'Posting Date', 'Document Date');
 
         self::writeToFile($csvFilePath, $newData, $headerArray);
     }
 
-    public static function readCSV(string $csvFilePath, bool $read_first_line = false): array {
+    public static function readCSV(string $csvFilePath, bool $read_first_line = false): array
+    {
         $csvData = [];
 
         try {
-            if (!file_exists($csvFilePath))  throw new Exception("The file does not exist: $csvFilePath");
+            if (!file_exists($csvFilePath))
+                throw new Exception("The file does not exist: $csvFilePath");
 
             $handle = fopen($csvFilePath, "r");
 
-            if ($handle === false) throw new Exception("Error opening the file: $handle");
+            if ($handle === false)
+                throw new Exception("Error opening the file: $handle");
 
             try {
-                if(!$read_first_line) fgetcsv($handle);
+                if (!$read_first_line)
+                    fgetcsv($handle);
 
                 while (($row = fgetcsv($handle, 1000, ",")) !== false) {
                     $csvData[] = $row;
@@ -43,14 +56,15 @@ class HandleCSV
         return $csvData;
     }
 
-    public static function deleteOldEntry(string $csvFilePath) : void {
+    public static function deleteOldEntry(string $csvFilePath): void
+    {
         $archivePeriod = getEnvVariables('archive_period');
 
         try {
             $rows = self::readCSV($csvFilePath);
             $oldDate = date('Y-m-d', strtotime("-$archivePeriod days"));
 
-            $filteredRows = array_filter($rows, function($row) use ($oldDate) {
+            $filteredRows = array_filter($rows, function ($row) use ($oldDate) {
                 $date = $row[1];
                 return strtotime($date) >= strtotime($oldDate);
             });
@@ -67,21 +81,25 @@ class HandleCSV
         }
     }
 
-    private static function writeToFile(string $csvFilePath, array $newData, array $header): void {
+    private static function writeToFile(string $csvFilePath, array $newData, array $header): void
+    {
         $fp = null;
 
-        if($csvFilePath == '') throw new Exception('File name and path cannot be empty');
+        if ($csvFilePath == '')
+            throw new Exception('File name and path cannot be empty');
 
         try {
             if (!file_exists($csvFilePath) || !filesize($csvFilePath)) {
                 $fp = fopen($csvFilePath, 'w');
-                if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
+                if (!$fp)
+                    throw new Exception("Failed to open file for writing: $csvFilePath");
 
                 fputcsv($fp, $header);
             } else {
                 $fp = fopen($csvFilePath, 'a');
 
-                if (!$fp) throw new Exception("Failed to open file for writing: $csvFilePath");
+                if (!$fp)
+                    throw new Exception("Failed to open file for writing: $csvFilePath");
             }
 
             foreach ($newData as $row) {
@@ -97,7 +115,8 @@ class HandleCSV
         } catch (Exception $e) {
             logThis(3, "An error occurred: " . $e->getMessage() . "\n" . $e);
         } finally {
-            if ($fp) fclose($fp);
+            if ($fp)
+                fclose($fp);
         }
     }
 }

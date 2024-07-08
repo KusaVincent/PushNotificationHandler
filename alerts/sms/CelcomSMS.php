@@ -21,8 +21,6 @@ class CelcomSMS
         curl_close($this->curl);
 
         return $response;
-
-        // return $this->postData;
     }
 
     private function configureAlert(): void

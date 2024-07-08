@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../../push_api/functional/load_files.php';
 require_once SMS_ALERT_PATH . 'CelcomSMS.php';
 
 class SMS extends CelcomSMS
@@ -27,7 +26,6 @@ class SMS extends CelcomSMS
             'partnerID' => $this->partnerID,
             'apikey' => $this->apiKey,
             'pass_type' => 'plain',
-            // "clientsmsid" => 17824,
             'mobile' => $this->mobile,
             'message' => $this->message,
             'shortcode' => $this->shortCode,
@@ -45,5 +43,3 @@ class SMS extends CelcomSMS
         return json_encode($postData);
     }
 }
-
-echo (new SMS('254712345678', 'test'))->send();

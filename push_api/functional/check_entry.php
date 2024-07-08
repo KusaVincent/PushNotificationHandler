@@ -1,15 +1,22 @@
 <?php
 
-function checkDuplicates(string $search_entry, array $csvData) : bool {
-    if(sizeof($csvData) > getEnvVariables('file_size')) return binarySearch($search_entry, $csvData);
-    
+function checkDuplicates(string $search_entry, array $csvData): bool
+{
+    if (sizeof($csvData) > getEnvVariables('file_size'))
+        return binarySearch($search_entry, $csvData);
+
     return linearSearch($search_entry, $csvData);
 }
 
-function linearSearch(string $search_entry, array $csvData): bool {
+function linearSearch(string $search_entry, array $csvData, bool $getData = false): bool|array
+{
     foreach ($csvData as $row) {
         if ($row[0] === $search_entry) {
             logThis(1, $search_entry . ' : is found');
+
+            if ($getData)
+                return $row;
+
             return true;
         }
     }
@@ -19,7 +26,8 @@ function linearSearch(string $search_entry, array $csvData): bool {
     return false;
 }
 
-function binarySearch(string $search_entry, array $csvData): bool {
+function binarySearch(string $search_entry, array $csvData): bool
+{
     $left = 0;
     $right = sizeof($csvData) - 1;
 
@@ -37,7 +45,7 @@ function binarySearch(string $search_entry, array $csvData): bool {
             $right = $mid - 1;
         }
     }
-    
+
     logThis(1, $search_entry . ' : is not found');
 
     return false;
