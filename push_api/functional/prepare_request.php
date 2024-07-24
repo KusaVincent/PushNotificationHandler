@@ -37,7 +37,7 @@ function prepareAPIRequest(array $data, string $save_transaction_file): bool
                 'mpesa_ref' => $id,
                 'amount' => $amount,
                 'created_at' => date('d-m-Y h:i A', strtotime($created_at)),
-        ], getEnvVariables('sms_file'));
+        ], getEnvVariables('msg_file'));
 
         return true;
 }
