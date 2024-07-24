@@ -11,7 +11,8 @@ try {
     foreach ($smsFileEntries as $smsFileEntry => $smsFileData) {
         $smsEntry = linearSearch($smsFileData[0], HandleCSV::readCSV(getEnvVariables('sms_file')), true);
 
-        $smsBody = "Payment for $smsEntry[0] of KES $smsEntry[3] received from $smsEntry[1] at $smsEntry[4].Mpesa reference: $smsEntry[2].";
+        $smsBody = "Dear $smsFileData[2],";
+        $smsBody .= "Payment for $smsEntry[0] of KES $smsEntry[3] received from $smsEntry[1] at $smsEntry[4].Mpesa reference: $smsEntry[2].";
 
         logThis(4, (new SMS($smsFileData[1], $smsBody))->send());
     }
