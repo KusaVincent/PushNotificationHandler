@@ -40,7 +40,7 @@ function writeSAPFile($id, $name, $amount, $created_at, $short_code): void
                 $formattedDate = date('Ymd', strtotime($created_at));
 
                 $sap_data = array(
-                        'Business Transaction' => getEnvVariables('business_transaction'),
+                        'Business Transaction' => str_replace('_', ' ', getEnvVariables('business_transaction')),
                         'Amount' => $amount,
                         'Text' => "$id-$short_code-$name",
                         'Cust Code' => $short_code,
